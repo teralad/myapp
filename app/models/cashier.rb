@@ -1,0 +1,2 @@
+class Cashier < User
+end
