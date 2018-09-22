@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   belongs_to :user_classification, optional: true
-  has_many :promotions, as: :promotable
+  has_many :promotions, through: :user_classification
   before_create :set_user_classification
   has_many :registers
 
@@ -21,6 +21,6 @@ class User < ApplicationRecord
   end
 
   def set_user_classification
-    user_classification_id = UserClassification.figure(self).id
+    self.user_classification_id = UserClassification.figure(self).id
   end
 end

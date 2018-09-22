@@ -3,10 +3,6 @@ class Promotion < ApplicationRecord
     belongs_to :promotable, polymorphic: true
     belongs_to :rule
 
-    def final_discount(price)
-        rule.discount(price)
-    end
-
     def self.valid_promotions
         where('date(expires_at) > now()')
     end
@@ -15,4 +11,9 @@ class Promotion < ApplicationRecord
     def self.pick_winning_promotion
         valid_promotions.first
     end
+    
+    def final_discount(price)
+        rule.discount(price)
+    end
+
 end

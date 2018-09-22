@@ -1,6 +1,7 @@
 class UserClassification < ApplicationRecord
     has_many :users
-
+    has_many :promotions, as: :promotable
+    
     def self.figure(user)
         if user.age.nil?
             UserClassification.find_by_name('ADULT')
