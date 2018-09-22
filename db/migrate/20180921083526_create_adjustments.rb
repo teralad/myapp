@@ -4,6 +4,8 @@ class CreateAdjustments < ActiveRecord::Migration[5.1]
       t.references :adjustable, polymorphic: true
       t.decimal    :amount,     precision: 8, scale: 2
       t.boolean    :eligible,   default: true
+      t.string     :source
+      t.references :register
       t.timestamps null: false
     end
   end
