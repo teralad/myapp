@@ -23,13 +23,16 @@ module CheckoutHelper
         puts "After performing few transactions the inventory is"
         puts "--------------------------------------------------"
         print_inventory
+        total_sales
     end
 
     def total_sales(day: Date.today)
+        puts "SALES"
+        puts "-----"
         registers = Register.where("date(created_at) = '#{day}'").group(:user_id).
-                    select("user_id, sum(payment_total) total_earnings, sum(adjustment_total) total_offers")
+                    select("user_id, sum(payment_total) total_earnings, sum(adjustment_total) total_offers, sum(item_total-total) offer_on_items, sum(total) cost_of_purchased_items")
         registers.each do |reg|
-            puts "Total earning from user #{reg[:user_id]} is #{reg[:total_earnings]} and offer given is #{reg[:total_offers]}"
+            puts "Total earning from user #{reg[:user_id]} is #{reg[:total_earnings]} and offer given is #{reg[:total_offers]} and offer on items is #{reg[:offer_on_items]} and cost of purchased items before item offers is #{reg[:cost_of_purchased_items]}"
         end
     end
 end

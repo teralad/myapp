@@ -3,12 +3,18 @@ class Register < ApplicationRecord
     has_many :adjustments, -> { order(:created_at) }, as: :adjustable
     has_many :item_adjustments, through: :items, source: :adjustments
     belongs_to :user
+
+    validates :payment_total, :numericality => { :greater_than_or_equal_to => 0 }
+
+    before_validation :set_payment_total
     
     def add(product:, quantity:)
-        return 'no stock' if quantity > product.count_on_hand
-        items.create(category_id: product.category_id, product: product, quantity: quantity)
-        calculate_final_price
-        update_count_on_hand
+        ActiveRecord::Base.transaction do
+            return 'no stock' if quantity > product.count_on_hand
+            items.create(category_id: product.category_id, product: product, quantity: quantity)
+            calculate_final_price
+            update_count_on_hand
+        end
     end
 
     def calculate_final_price
@@ -41,4 +47,9 @@ class Register < ApplicationRecord
     def promotion_applied?
         adjustments.where(source: 'Promotion').present?
     end
+
+    def set_payment_total
+        self.payment_total = self.payment_total <= 0 ? 0 : self.payment_total
+    end
+
 end
