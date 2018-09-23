@@ -13,7 +13,7 @@ class User < ApplicationRecord
   end
 
   def promotion
-    Promotion.pick_winning_promotion
+    Promotion.pick_winning_promotion(self)
   end
 
   def create_register

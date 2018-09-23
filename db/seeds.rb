@@ -10,6 +10,7 @@ UserClassification.create(name: 'SENIOR_FEMALE',age: 60)
 UserClassification.create(name: 'JUNIOR_MALE',age: 20)
 UserClassification.create(name: 'JUNIR_FEMALE',age: 20)
 UserClassification.create(name: 'ADULT',age: 21)
+UserClassification.create(name: 'EMPLOYEE',age: 1)
 
 user = CreateAdminService.new.call
 puts 'CREATED ADMIN USER: ' << user.email
@@ -39,3 +40,6 @@ female_user_class = UserClassification.find_by_name('SENIOR_FEMALE')
 Promotion.create(promotable_type: 'Category', promotable_id: chips_category.id, name: 'discount on chips', rule: promotion_rule,expires_at: Time.now+100.day)
 Promotion.create(promotable_type: 'UserClassification', promotable_id: male_user_class.id, name: 'discount for senior citizen', rule: promotion_rule,expires_at: Time.now+100.day)
 Promotion.create(promotable_type: 'UserClassification', promotable_id: female_user_class.id, name: 'discount for senior citizen', rule: promotion_rule,expires_at: Time.now+100.day)
+
+user_class = UserClassification.find_by_name('EMPLOYEE')
+user_class.promotions.create(name: 'discount for employees',rule: Rule.create(name: 'EMPLOYEE_FLAT_PERCENT',description: 'discount on bill',action: '%',action_on: -10), expires_at: Time.now+100.day)

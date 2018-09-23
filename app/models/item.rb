@@ -19,7 +19,7 @@ class Item < ApplicationRecord
         product.update_attributes(count_on_hand: product.count_on_hand - quantity)
     end
     
-    protected
+    private
     
     def set_item_price
         self.item_price = Product.find(product_id).price * quantity
